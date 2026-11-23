@@ -2250,6 +2250,21 @@
       }).join('');
     }
 
+const DEFAULT_STORE_SHOWCASE_VIDEOS = {
+      default: [
+        {
+          name: 'Featured Storefront Showcase',
+          src: 'https://github.com/pisharoty/Leonsbitsandbytes/releases/download/V1.0/GABRIELLA.VEGA.Pizza.Business.Hype.Post.-.Magazine.Cover.09.55.12.mp4'
+        }
+      ],
+      1: [], // The Lion's Mane Salon — paste { name: '...', src: 'https://...' } clips here later
+      2: [], // Store 2
+      3: [], // Store 3
+      4: [], // Store 4
+      5: [], // Store 5
+      6: []  // Leon's Bits & Bytes
+    };
+
     async function initProductVideoShowcase(storeId) {
       const vid = document.getElementById('product-showcase-video');
       const emptyEl = document.getElementById('product-showcase-empty');
@@ -2258,7 +2273,13 @@
       const playBtn = document.getElementById('product-showcase-play-btn');
       if (!vid || !emptyEl || !pillsEl) return;
 
-      const playlist = await getProductVideosForStore(storeId);
+      let playlist = await getProductVideosForStore(storeId);
+      if (!playlist || playlist.length === 0) {
+        const storeSpecific = DEFAULT_STORE_SHOWCASE_VIDEOS[storeId];
+        playlist = (Array.isArray(storeSpecific) && storeSpecific.length > 0)
+          ? storeSpecific
+          : (DEFAULT_STORE_SHOWCASE_VIDEOS.default || []);
+      }
       window.__productPlaylist = playlist;
       window.__productPlaylistIdx = 0;
 
